@@ -1,67 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Banking Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
-</head>
-<body class="bg-gray-100">
-  <!-- Navbar -->
-  <nav class="bg-blue-600 p-4 shadow-md">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="text-white text-2xl font-bold">Banking Dashboard</div>
-      <div id="userAddress" class="text-white">Connecting...</div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="container mx-auto mt-10">
-    <!-- Status Message -->
-    <div id="statusMessage" class="mb-4 p-4 rounded-lg hidden"></div>
-
-    <!-- Card with balance -->
-    <div class="bg-white p-6 rounded-lg shadow-md flex justify-between items-center">
-      <div>
-        <h2 class="text-2xl font-semibold text-gray-700">Current Balance</h2>
-        <p id="balance" class="text-4xl font-bold text-blue-600">Loading...</p>
-      </div>
-      <div>
-        <button onclick="getBalance()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Refresh Balance</button>
-      </div>
-    </div>
-
-    <!-- Buttons for deposit/withdraw -->
-    <div class="grid grid-cols-2 gap-6 mt-8">
-      <!-- Deposit -->
-      <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
-        <h3 class="text-xl font-semibold text-gray-700 mb-4">Deposit Funds</h3>
-        <input type="number" id="depositAmount" placeholder="Amount" class="w-full p-2 mb-4 border border-gray-300 rounded">
-        <button onclick="deposit()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">Deposit</button>
-      </div>
-
-      <!-- Withdraw -->
-      <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
-        <h3 class="text-xl font-semibold text-gray-700 mb-4">Withdraw Funds</h3>
-        <input type="number" id="withdrawAmount" placeholder="Amount" class="w-full p-2 mb-4 border border-gray-300 rounded">
-        <button onclick="withdraw()" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Withdraw</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 p-4 mt-10 text-white text-center">
-    &copy; 2024 Banking Dashboard. All rights reserved.
-  </footer>
-
-  <script>
-    let web3;
+let web3;
 let bankContract;
 let userAccount;
 
-// const contractAddress = "0x0fC5025C764cE34df352757e82f7B5c4Df39A836";  
-const contractAddress = "0xaE036c65C649172b43ef7156b009c6221B596B8b";  
+const contractAddress = "0x0fC5025C764cE34df352757e82f7B5c4Df39A836";  
 const contractABI = [
   {
     "inputs": [
@@ -109,19 +50,13 @@ const contractABI = [
   }
 ];
 
-
+// Function to display status messages
 function showStatus(message, isError = false) {
   const statusElement = document.getElementById('statusMessage');
   statusElement.textContent = message;
   statusElement.classList.remove('hidden', 'bg-green-100', 'text-green-700', 'bg-red-100', 'text-red-700');
-  if (isError) {
-    statusElement.classList.add('bg-red-100');
-    statusElement.classList.add('text-red-700');
-  } else {
-    statusElement.classList.add('bg-green-100');
-    statusElement.classList.add('text-green-700');
-  }
-} 
+  statusElement.classList.add(isError ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700');
+}
 
 // Initialize Web3 connection
 window.addEventListener('load', async () => {
@@ -184,6 +119,3 @@ async function withdraw() {
     showStatus("Withdrawal failed: " + error.message, true);
   }
 }
-  </script>
-</body>
-</html>
